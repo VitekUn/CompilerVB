@@ -1,4 +1,5 @@
 import Lexer.Lexer;
+import Parser.Parser;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +13,7 @@ public class Compiler {
 
         if(args.length == 0) {
             Compiler obj = new Compiler();
-            file = obj.get_file("min.vb");
+            file = obj.get_file("gcd.vb");
         } else if(args.length == 2){
             options = args[0];
             file = new File(args[1]);
@@ -21,9 +22,13 @@ public class Compiler {
         }
 
         Lexer.file_handler(file);
-        Lexer.print_tokens();
-        Lexer.print_errors();
+//        Lexer.print_tokens();
+//        Lexer.print_errors();
 
+        Parser.token_processing(Lexer.getTokens(), Parser.getNodesAST());
+        Parser.tree_building(Parser.getNodesAST());
+        Parser.print_tree();
+        Parser.print_errors();
     }
 
     private File get_file(String fileName) {

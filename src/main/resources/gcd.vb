@@ -4,7 +4,7 @@ Sub Main()
 	b = CInt(Console.ReadLine())
 
 	While a <> 0 And b <> 0
-		If a >= Then 
+		If a >= b Then 
 			a = a Mod b 
 		Else 
 			b = b Mod a

@@ -23,7 +23,7 @@ public class Lexer {
             readLine = reader.readLine();
             while (readLine != null) {
                 lineCounter++;
-                line_handler(readLine, lineCounter);
+                line_handler(readLine, lineCounter, tokens);
                 readLine = reader.readLine(); // считываем остальные строки в цикле
             }
         } catch (IOException e) {
@@ -31,14 +31,14 @@ public class Lexer {
         }
     }
 
-    public static void line_handler(String processedString, int numbLine) {
-        List<Token> listTokens = new ArrayList<>();
+    public static void line_handler(String processedString, int numbLine, List<Token> listTokens) {
+        List<Token> bufTokens = new ArrayList<>();
 
         List<String> subStr = spliting_string(processedString); //Разбивание строки на токены
 
-        token_initialization(listTokens, subStr, numbLine);
+        token_initialization(bufTokens, subStr, numbLine);
 
-        tokens.addAll(listTokens);
+        listTokens.addAll(bufTokens);
     }
 
     public static List<String> spliting_string(String str) {
@@ -199,4 +199,9 @@ public class Lexer {
             }
         }
     }
+
+    public static List<Token> getTokens() {
+        return tokens;
+    }
+
 }
