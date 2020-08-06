@@ -46,4 +46,8 @@ public class AST {
     public List<AST> getChildren() {
         return children;
     }
+
+    public void add_child (AST node) {
+        this.children.add(node);
+    }
 }

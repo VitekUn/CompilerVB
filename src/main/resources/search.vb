@@ -1,9 +1,7 @@
 Sub Main()
     Dim line As String = "abcdef"
     Dim substring As String = "abc"
-    Dim i As Int = 0
-    Dim j As Int = 0
-    Dim count As Int = 0
+    Dim i, j, count As Integer = 0
 
     While i < line.Length()
         If line(j) = substring(i) Then
