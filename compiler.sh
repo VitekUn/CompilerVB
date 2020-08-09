@@ -21,5 +21,5 @@ then
 	fi
 else
 	# Два параметра
-	java -classpath /home/viktor/CompilerVB/target/classes/classes Compiler $1 $2
+	java -classpath /home/viktor/CompilerVB/target/classes Compiler $1 $2
 fi

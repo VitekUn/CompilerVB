@@ -1,5 +1,6 @@
 import Lexer.Lexer;
 import Parser.Parser;
+import Semantics.Semantics;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,6 +30,9 @@ public class Compiler {
         Parser.tree_building(Parser.getNodesAST());
         Parser.print_tree();
         Parser.print_errors();
+
+        Semantics.analysis_tree(Parser.getNodesAST(), "0", 0);
+        Semantics.print_symbolTable();
     }
 
     private File get_file(String fileName) {

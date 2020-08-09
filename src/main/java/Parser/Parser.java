@@ -28,6 +28,7 @@ public class Parser {
 
         while (prevSize != nodes.size()) {
             prevSize = nodes.size();
+
             for (int i = 0; i < nodes.size(); i++) {
                 node = nodes.get(i);
                 switch (node.getType()) {
