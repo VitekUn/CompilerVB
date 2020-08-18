@@ -1,7 +1,7 @@
 Sub Main()
-	Dim a, b, result As Integer
-	a = CInt(Console.ReadLine())
-	b = CInt(Console.ReadLine())
+	Dim a, b, result As Integer = 0
+	a = Console.ReadLine()
+	b = Console.ReadLine()
 
 	While a <> 0 And b <> 0
 		If a >= b Then 

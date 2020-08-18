@@ -99,6 +99,60 @@ public class TestLexer {
     }
 
     @org.junit.jupiter.api.Test
+    void spliting_string_test_literal3() {
+        List<String> expected = new ArrayList<>();
+        List<String> actual = new ArrayList<>();
+
+        actual = Lexer.spliting_string("Dim line As String=\"abcdef\" + \"ghz\"");
+        expected.add("Dim");
+        expected.add("line");
+        expected.add("As");
+        expected.add("String");
+        expected.add("=");
+        expected.add("\"abcdef\"");
+        expected.add("+");
+        expected.add("\"ghz\"");
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @org.junit.jupiter.api.Test
+    void spliting_string_test_literal4() {
+        List<String> expected = new ArrayList<>();
+        List<String> actual = new ArrayList<>();
+
+        actual = Lexer.spliting_string("Dim line As String=\"abcdef\" + \"ghz\" - 1");
+        expected.add("Dim");
+        expected.add("line");
+        expected.add("As");
+        expected.add("String");
+        expected.add("=");
+        expected.add("\"abcdef\"");
+        expected.add("+");
+        expected.add("\"ghz\"");
+        expected.add("-");
+        expected.add("1");
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @org.junit.jupiter.api.Test
+    void spliting_string_test_literal5() {
+        List<String> expected = new ArrayList<>();
+        List<String> actual = new ArrayList<>();
+
+        actual = Lexer.spliting_string("Dim line As String=\"abcdef");
+        expected.add("Dim");
+        expected.add("line");
+        expected.add("As");
+        expected.add("String");
+        expected.add("=");
+        expected.add("\"abcdef");
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @org.junit.jupiter.api.Test
     void spliting_string_test_comment1 () {
         List<String> expected = new ArrayList<>();
         List<String> actual = new ArrayList<>();

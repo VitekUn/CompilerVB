@@ -32,7 +32,8 @@ public class Compiler {
         Parser.print_errors();
 
         Semantics.analysis_tree(Parser.getNodesAST(), "0", 0);
-        Semantics.print_symbolTable();
+//        Semantics.print_symbolTable();
+        Semantics.print_errors();
     }
 
     private File get_file(String fileName) {

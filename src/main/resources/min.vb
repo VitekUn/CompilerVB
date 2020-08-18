@@ -3,15 +3,15 @@ Sub Main()
     Dim max, i As Integer = 0
 
     While i < arr.Length()
-        a(i) = CInt(Console.ReadLine()) 
+        arr(i) = Console.ReadLine()
         i += 1
     End While
 
     i = 0
 
     While i < arr.Length()
-        If a(i) > max Then 
-            max = a(i)
+        If arr(i) > max Then
+            max = arr(i)
             i += 1
         End If
     End While

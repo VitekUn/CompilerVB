@@ -53,20 +53,43 @@ public class Lexer {
             * то останется только "1 + 2 = 3"   */
         }
         if(str.contains("\"")) {
-            /* Проверка на строчный литерал, то нужно аккуратно его вырезать, а не делить по пробелам
+            /* Проверка на строчный литерал, если есть то нужно аккуратно его вырезать, а не делить по пробелам
             * Всё остальное нужно разделить на пробелы */
-            int startLiteral = str.indexOf("\""); //Определение индекса строчного литерала
-            int endLiteral = str.lastIndexOf("\"");
-            List<String> buffer = Arrays.asList(str.substring(0, startLiteral).split(" "));
-            subStr.addAll(buffer);
-            subStr.add(str.substring(startLiteral, endLiteral + 1));
-            if(endLiteral + 2 < str.length()) {
-                buffer = Arrays.asList(str.substring(endLiteral + 2).split(" "));
-                subStr.addAll(buffer);
-            }
+            subStr = spliting_by_str_literal(str);
         } else {
             subStr = Arrays.asList(str.split(" ")); //Разбивка строки по пробелам
         }
+        return subStr;
+    }
+
+    public static List<String> spliting_by_str_literal(String str) {
+        int i, j, start = 0;
+        //Список всех токенов
+        //Делим строку по литералам, чтобы не делить литералы по пробелам
+        List<String> subStr = new ArrayList<>();
+        //Проходимся по строке
+        for(i = 0; i < str.length(); i++) {
+            //Если нашли кавычки
+            if(str.charAt(i) == '"') {
+                //Обрубаем всё до начала кавычек и вставляем в список
+                subStr.addAll(Arrays.asList(str.substring(start, i - 1).trim().split(" ")));
+                //Запускаем второй цикл для поиска закрывающей кавычки
+                for(j = i + 1; j < str.length(); j++) {
+                    //Когда нашли или прошли всю строку и не нашли, вырезаем и вставляем в список
+                    //и продолжаем поиск на случай если в строке ещё литералы есть
+                    if(str.charAt(j) == '"' || j == str.length() - 1) {
+                        subStr.add(str.substring(i, j + 1));
+                        start = j + 1;
+                        i = j + 1;
+                        break;
+                    }
+                }
+            }
+        }
+        //Условие если после литерала последнего что-то осталось, то давбляем в список
+        if(start < str.length())
+            subStr.addAll(Arrays.asList(str.substring(start).trim().split(" ")));
+
         return subStr;
     }
 
@@ -173,10 +196,10 @@ public class Lexer {
         String newStr = line;
         String[] ArrayPattern = new String[] {"\\(", "\\)", "\\[", "]", "\\{", "}", "\\*", "/", ";", ":",
                 ",", "%", "-", "\\+", "=", "-\\s\\s=",  "\\+\\s\\s=", "-\\s\\s-", "\\+\\s\\s\\+", "=\\s\\s=", "<", ">", "<\\s\\s=",
-                ">\\s\\s=", "!\\s=", " \\*\\s\\s=", "/\\s\\s=", "\t", "<\\s\\s>"};
+                ">\\s\\s=", "!\\s=", " \\*\\s\\s=", "/\\s\\s=", "\t", "<\\s\\s>", "\\s\\s"};
         String[] ArrayReplaceable = new String[] {" ( ", " ) ", " [ ", " ] ", " { ", " } ", " * ", " / ",  " ; ", " : ",
                 " , ", " % ", " - ", " + ", " = ", " -= ", " += ", " -- ", " ++ ", " == ", " < ", " > ", " <= ", " >= ",
-                " != ", " *= ", " /= ", " ", "<>"};
+                " != ", " *= ", " /= ", " ", "<>", " "};
         for(int i = 0; i < ArrayPattern.length; i++) {
             Pattern pattern = Pattern.compile(ArrayPattern[i]);
             Matcher matcher = pattern.matcher(newStr);

@@ -156,7 +156,8 @@ public class DesignTemplate {
             String typeNextNode = nodes.get(nodeIndex + 2).getType();
             int line = nodes.get(nodeIndex).getLine();
 
-            if(typeNextNode.equals("Id") || typeNextNode.equals("Decimal") || typeNextNode.equals("Appeal")) {
+            if(typeNextNode.equals("Id") || typeNextNode.equals("Decimal")
+                || typeNextNode.equals("Appeal") || typeNextNode.equals("String")) {
                 //Отправляем на случай если это массив, чтоб он собрался (Appeal)
                 Parser.id_processing(nodes, nodeIndex + 2);
                 //Отправляем на случай если это арифмитическое выражение, чтоб собралось
@@ -257,7 +258,8 @@ public class DesignTemplate {
             String typeOperand2 = nodes.get(nodeIndex + 2).getType();
 
             if(typeOperation.equals("ComparisonOp")) {
-                if(typeOperand2.equals("Id") || typeOperand2.equals("Decimal") || typeOperand2.equals("Appeal")) {
+                if(typeOperand2.equals("Id") || typeOperand2.equals("Decimal")
+                        || typeOperand2.equals("Appeal") || typeOperand2.equals("String")) {
                     //Если всё норм соединяем в условие
                     Parser.merging_nodes(nodes, nodeIndex, nodeIndex + 2, "Logical expr", line);
 
