@@ -2,3 +2,5 @@
 /target/*
 # Не отслеживать папку.idea
 /.idea/*
+# Не отслеживать output
+output

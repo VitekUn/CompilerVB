@@ -56,7 +56,7 @@ public class Parser {
         if(nodeIndex + 1 < nodes.size()) {
             AST nextNode = nodes.get(nodeIndex + 1); //Следующий узел после имени переменной
 
-            if(nextNode.getType().equals("Brace")) {
+            if(nextNode.getType().equals("Brace") && nextNode.getName().equals("(")) {
                 brace_processing(nodes, nodeIndex + 1);
                 nextNode = nodes.get(nodeIndex + 1);
             }
@@ -64,7 +64,11 @@ public class Parser {
             switch (nextNode.getType()) {
                 case ("Block brace"):
                     merging_nodes(nodes, nodeIndex, nodeIndex + 1, "Appeal", nodes.get(nodeIndex).getLine());
-                    id_processing(nodes, nodeIndex);
+                    if(nodeIndex + 1 < nodes.size()) {
+                        nextNode = nodes.get(nodeIndex + 1);
+                        if (!nextNode.getType().equals("ArithmeticOp"))
+                            id_processing(nodes, nodeIndex);
+                    }
                     break;
                 case ("ComparisonOp"):
                     DesignTemplate.temp_logical_expr(nodes, nodeIndex);
@@ -72,6 +76,9 @@ public class Parser {
                 case ("Equality"):
                 case ("AssignOp"):
                     DesignTemplate.temp_equality_expr(nodes, nodeIndex);
+                    break;
+                case ("ArithmeticOp"):
+                    DesignTemplate.temp_arithmetic_expr(nodes, nodeIndex);
                     break;
             }
         }
@@ -82,6 +89,9 @@ public class Parser {
         while(i < nodes.size()) {
             if(nodes.get(i).getName().equals("(")) {
                 brace_processing(nodes, i);
+            }
+            if(nodes.get(i).getType().equals("Id")) {
+                id_processing(nodes, i);
             }
             if(nodes.get(i).getName().equals(")")) {
                 indexRight = i;
@@ -122,13 +132,14 @@ public class Parser {
         String nameNode, typeNode, name = nodes.get(nodeIndex).getName();
         int lineNode;
 
-        if(nodes.get(nodeIndex).getChildren().isEmpty()) {
+        if(nodes.get(nodeIndex).getChildren().isEmpty() || nodes.get(nodeIndex).getType().equals("Appeal")) {
             //Если дочерний список узла пуст, сначала добавляем этот узел в список своих дочерних
             name = name + " ";
             nameNode = nodes.get(nodeIndex).getName();
             typeNode = nodes.get(nodeIndex).getType();
             lineNode = nodes.get(nodeIndex).getLine();
-            childrenNode = new ArrayList<>();
+            childrenNode = new ArrayList<>(nodes.get(nodeIndex).getChildren());
+            nodes.get(nodeIndex).setChildren(new ArrayList<AST>());
             nodes.get(nodeIndex).add_child(new AST(nameNode, typeNode, lineNode, childrenNode));
         }
 

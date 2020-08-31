@@ -190,9 +190,13 @@ public class Semantics {
 
         if(type1.equals("Id") || type1.equals("Appeal"))
             type1 = get_data_type_variable(node1, scope);
+        else if(type1.equals("Arithmetic expr"))
+            type1 = check_arithmetic_expression(node1, scope);
 
         if(type2.equals("Id") || type2.equals("Appeal"))
             type2 = get_data_type_variable(node2, scope);
+        else if(type2.equals("Arithmetic expr"))
+            type2 = check_arithmetic_expression(node2, scope);
 
         return checking_two_types(type1, type2);
     }

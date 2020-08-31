@@ -1,22 +1,25 @@
 Sub Main()
-    Dim arr(10) As Integer 
-    Dim max As Integer = 0
+    Dim min, arr(4) As Integer
     Dim i As Integer = 0
 
     While i < arr.Length()
-        a(i) = CInt(Console.ReadLine()) 
-        i += 1
+        Console.Write("Введите элемент ")
+        Console.Write(i)
+        Console.Write(": ")
+        arr(i) = Console.ReadLine()
+        i = i + 1
     End While
 
     i = 0
+    min = arr(0)
 
     While i < arr.Length()
-        If a(i) > max Then 
-            max = a(i)
-            i += 1
+        If arr(i) < min Then
+            min = arr(i)
         End If
+        i = i + 1
     End While
 
-    Console.Write("Максимум равен: ")
-    Console.WriteLine(max)
+    Console.Write("Минимум равен: ")
+    Console.WriteLine(min)
 End Sub

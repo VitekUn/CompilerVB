@@ -1,19 +1,19 @@
 Sub Main()
-	Dim a, b, result As Integer
-	a = CInt(Console.ReadLine())
-	b = CInt(Console.ReadLine())
-
-	While a <> 0 And b <> 0
-		If a >= Then 
-			a = a Mod b 
-		Else 
-			b = b Mod a
+	Dim a, b, i As Integer = 0
+    Console.Write("Введите первое число: ")
+	a = Console.ReadLine()
+    Console.Write("Введите второе число: ")
+	b = Console.ReadLine()
+    i = a
+    
+    While i > 0
+        If a Mod i = 0 Then
+            If b Mod i = 0 Then
+                Console.Write("Наибольший общий делитель: ")
+                Console.WriteLine(i)
+                i = 0
+            End If
         End If
-	End While
-
-	result = a + b
-
-	Console.Write("Наибольший общий делитель: ")
-	Console.WriteLine(result)
-
+        i = i - 1
+    End While
 End Sub

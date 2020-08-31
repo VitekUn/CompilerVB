@@ -1,12 +1,15 @@
 Sub Main()
-    Dim line As String = "abcdef"
-    Dim substring As String = "abc"
-    Dim i As Int = 0
-    Dim j As Int = 0
-    Dim count As Int = 0
+    Dim line As String = "String"
+    Dim substring As String = "Str"
+    Dim i, j, count As Integer = 0
+
+    Console.Write("Строка :")
+    Console.WriteLine(line)
+    Console.Write("Подстрока :")
+    Console.WriteLine(substring)
 
     While i < line.Length()
-        If line(j) = substring(i) Then
+        If line(i) = substring(j) Then
             j = j + 1
             count = count + 1
         Else
@@ -15,10 +18,10 @@ Sub Main()
         End If
 
         If count = substring.Length() Then
-            Console.WriteLine("Является подстрокой")
+            Console.WriteLine("Является подстрокой!")
             i = line.Length()
         End If
-        i += 1
+        i = i + 1
     End While
     
 End Sub

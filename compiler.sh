@@ -16,10 +16,12 @@ then
 			echo "'--dump-ast' — Вывести AST дерево"
 			echo "'--dump-asm' — Вывести сгенерированный код ассемблера"
 		else
-			java -classpath /home/viktor/CompilerVB/target/classes Compiler $1
+			java -classpath target/classes Compiler $1
+			gcc -no-pie ./output.s -o output
+			./output
 		fi
 	fi
 else
 	# Два параметра
-	java -classpath /home/viktor/CompilerVB/target/classes Compiler $1 $2
+	java -classpath target/classes Compiler $1 $2
 fi

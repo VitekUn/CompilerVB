@@ -47,7 +47,12 @@ public class Lexer {
         str = adding_space(str); //Вставка пробелов см. функцию
 
         if(str.contains("'")) {  // Игнорирование комментариев
-            str = str.split("'")[0];
+            String[] bufStr = str.split("'");
+            if(bufStr.length > 1)
+                if(!bufStr[0].contains("'"))
+                    str = bufStr[0];
+            if(str.contains("'"))
+                str = "";
             /*Берёмя только левую часть от комментария
             * т.е. если "1 + 2 = 3 'Это комментарий"
             * то останется только "1 + 2 = 3"   */
@@ -227,4 +232,7 @@ public class Lexer {
         return tokens;
     }
 
+    public static List<Token> getUnidentifiedTokens() {
+        return unidentifiedTokens;
+    }
 }

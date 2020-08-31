@@ -18,16 +18,21 @@ public class DesignTemplate {
     public static void temp_construction_block(List<AST> nodes, int nodeIndex) {
         int line = nodes.get(nodeIndex).getLine();
         AST node, nodeBlock = nodes.get(nodeIndex);
-
+        int prevSize;
         for (int i = nodeIndex + 1; i < nodes.size(); i++) {
             node = nodes.get(i);
             if(!Arrays.asList(completed_construction).contains(node.getType())) { //Если не собранна
                 switch (node.getType()) {
                     case ("While declaration"): //Если объявление иф или вайл, то отправляем собираться сначала их
                     case ("If declaration"):
+                        prevSize = nodes.size();
                         temp_construction_block(nodes, i);
+                        //Запускаем цикл заново, так как количество узлов изменилось и мы можем что-то пропустить
+                        if(prevSize > nodes.size())
+                            i = nodeIndex + 1;
                         break;
                     case ("Keyword"): //Если это Else то собираем сначала его
+                        prevSize = nodes.size();
                         if(node.getName().equals("Else")) {
                             temp_construction_block(nodes, i);
                             node = nodes.get(i);
@@ -35,13 +40,20 @@ public class DesignTemplate {
                                 i--;                                 // чтобы заново пройтись по этому узлу
                             } else { Parser.adding_error_block(nodes, i); }
                         } else { Parser.adding_error_block(nodes, i); }
+                        //Запускаем цикл заново, так как количество узлов изменилось и мы можем что-то пропустить
+                        if(prevSize > nodes.size())
+                            i = nodeIndex + 1;
                         break;
                     case ("Block Else"): //Для условия сворачивания If может также быть Block Else
                         if(nodeBlock.getType().equals("If declaration")) {
                             //Собираем Иф до блока Елсе
+                            //Сохраняем сколько узлов сейчас в списке
+                            prevSize = nodes.size();
                             Parser.merging_nodes(nodes, nodeIndex, i - 1, "Block If", line);
+                            //Измеряем насколько узлов количество изменилось, чтобы учесть при сборке обоих блоков
+                            int shift = prevSize - nodes.size();
                             //Объединяем два блока
-                            Parser.merging_nodes(nodes, nodeIndex, i - 1, "Block If Else", line);
+                            Parser.merging_nodes(nodes, nodeIndex, i - shift, "Block If Else", line);
                             return;
                         } else { Parser.adding_error_block(nodes, i); }
                         break;
@@ -179,6 +191,10 @@ public class DesignTemplate {
                     typeOp = nodes.get(i).getType();
                     typeOperand = nodes.get(i + 1).getType();
                     if(typeOp.equals("ArithmeticOp")) {
+                        if(i + 2 < nodes.size())
+                            if(typeOperand.equals("Id") && nodes.get(i + 2).getName().equals("(")) {
+                                Parser.id_processing(nodes, i + 1);
+                            }
                         if (typeOperand.equals("Id") || typeOperand.equals("Decimal") || typeOperand.equals("Appeal")) {
                             Parser.adding_in_node(nodes, i, i + 1, "Arithmetic expr", nodeIndex);
                             i -= 2;
@@ -257,7 +273,7 @@ public class DesignTemplate {
             String typeOperation = nodes.get(nodeIndex + 1).getType();
             String typeOperand2 = nodes.get(nodeIndex + 2).getType();
 
-            if(typeOperation.equals("ComparisonOp")) {
+            if(typeOperation.equals("ComparisonOp") || typeOperation.equals("Equality")) {
                 if(typeOperand2.equals("Id") || typeOperand2.equals("Decimal")
                         || typeOperand2.equals("Appeal") || typeOperand2.equals("String")) {
                     //Если всё норм соединяем в условие

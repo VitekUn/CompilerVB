@@ -1,5 +1,6 @@
 package AST;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AST {
@@ -13,6 +14,13 @@ public class AST {
         this.type = type;
         this.line = line;
         this.children = children;
+    }
+
+    public AST(String name, String type) {
+        this.name = name;
+        this.type = type;
+        this.line = 0;
+        this.children = new ArrayList<>();
     }
 
     public void setName(String name) {
