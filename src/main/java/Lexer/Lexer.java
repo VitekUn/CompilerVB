@@ -18,13 +18,13 @@ public class Lexer {
         int lineCounter = 0;
 
         try {
-            FileReader fr = new FileReader(file); //создаем BufferedReader с сущ. FileReader для построчного считывания
-            BufferedReader reader = new BufferedReader(fr); // считаем сначала первую строку
+            FileReader fr = new FileReader(file);
+            BufferedReader reader = new BufferedReader(fr);
             readLine = reader.readLine();
             while (readLine != null) {
                 lineCounter++;
                 line_handler(readLine, lineCounter, tokens);
-                readLine = reader.readLine(); // считываем остальные строки в цикле
+                readLine = reader.readLine();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -34,7 +34,7 @@ public class Lexer {
     public static void line_handler(String processedString, int numbLine, List<Token> listTokens) {
         List<Token> bufTokens = new ArrayList<>();
 
-        List<String> subStr = spliting_string(processedString); //Разбивание строки на токены
+        List<String> subStr = spliting_string(processedString);
 
         token_initialization(bufTokens, subStr, numbLine);
 
@@ -44,44 +44,31 @@ public class Lexer {
     public static List<String> spliting_string(String str) {
         List<String> subStr = new ArrayList<>();
 
-        str = adding_space(str); //Вставка пробелов см. функцию
+        str = adding_space(str);
 
-        if(str.contains("'")) {  // Игнорирование комментариев
+        if(str.contains("'")) {
             String[] bufStr = str.split("'");
             if(bufStr.length > 1)
                 if(!bufStr[0].contains("'"))
                     str = bufStr[0];
             if(str.contains("'"))
                 str = "";
-            /*Берёмя только левую часть от комментария
-            * т.е. если "1 + 2 = 3 'Это комментарий"
-            * то останется только "1 + 2 = 3"   */
         }
         if(str.contains("\"")) {
-            /* Проверка на строчный литерал, если есть то нужно аккуратно его вырезать, а не делить по пробелам
-            * Всё остальное нужно разделить на пробелы */
             subStr = spliting_by_str_literal(str);
         } else {
-            subStr = Arrays.asList(str.split(" ")); //Разбивка строки по пробелам
+            subStr = Arrays.asList(str.split(" "));
         }
         return subStr;
     }
 
     public static List<String> spliting_by_str_literal(String str) {
         int i, j, start = 0;
-        //Список всех токенов
-        //Делим строку по литералам, чтобы не делить литералы по пробелам
         List<String> subStr = new ArrayList<>();
-        //Проходимся по строке
         for(i = 0; i < str.length(); i++) {
-            //Если нашли кавычки
             if(str.charAt(i) == '"') {
-                //Обрубаем всё до начала кавычек и вставляем в список
                 subStr.addAll(Arrays.asList(str.substring(start, i - 1).trim().split(" ")));
-                //Запускаем второй цикл для поиска закрывающей кавычки
                 for(j = i + 1; j < str.length(); j++) {
-                    //Когда нашли или прошли всю строку и не нашли, вырезаем и вставляем в список
-                    //и продолжаем поиск на случай если в строке ещё литералы есть
                     if(str.charAt(j) == '"' || j == str.length() - 1) {
                         subStr.add(str.substring(i, j + 1));
                         start = j + 1;
@@ -91,7 +78,6 @@ public class Lexer {
                 }
             }
         }
-        //Условие если после литерала последнего что-то осталось, то давбляем в список
         if(start < str.length())
             subStr.addAll(Arrays.asList(str.substring(start).trim().split(" ")));
 
@@ -101,10 +87,10 @@ public class Lexer {
     public static void token_initialization(List<Token> listTokens, List<String> subStr, int numbLine) {
         String typeToken;
         for (String s : subStr) {
-            if(s.trim().length() != 0) { //Отбрасывание строк состоящих из пробела
-                typeToken = token_type_definition(s); //Определение типа токена
+            if(s.trim().length() != 0) {
+                typeToken = token_type_definition(s);
                 Token token = new Token(s, typeToken, numbLine);
-                if(typeToken.equals("Unknown")) //Если неизвестный токен -> отправляется в список ошибок
+                if(typeToken.equals("Unknown"))
                     unidentifiedTokens.add(token);
                 else
                     listTokens.add(token);
@@ -195,8 +181,6 @@ public class Lexer {
         }
     }
 
-    /* Функция adding_space вставляет пробелы перед и после знаков
-    * Например "1+2=3" после работы функции будет выглядеть "1 + 2 = 3"*/
     public static String adding_space(String line) {
         String newStr = line;
         String[] ArrayPattern = new String[] {"\\(", "\\)", "\\[", "]", "\\{", "}", "\\*", "/", ";", ":",

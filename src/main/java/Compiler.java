@@ -17,8 +17,6 @@ public class Compiler {
         String options = "non";
 
         if(args.length == 0) {
-//            Compiler obj = new Compiler();
-//            file = obj.get_file("gcd.vb");
             return;
         } else if(args.length == 2){
             options = args[0];
@@ -87,7 +85,6 @@ public class Compiler {
         writer.close();
     }
 
-    //Стандартный шаблон для запуска gcc. Чтоб не было ошибок при запуске скрипта, когда компилятор находит ошибки
     public static void update_file() throws IOException {
         List<String> asmCode = new ArrayList<>();
         asmCode.add(".globl main\nmain:");

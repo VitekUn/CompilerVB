@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TestParser {
-    //Пишем строку кода, потом собираем её в дерево и смотрим тип узла, который получился
     @org.junit.jupiter.api.Test
     void variable_declaration_test_build1 () {
         List<AST> actual = create_nodes_AST("Dim a As Integer", 1);

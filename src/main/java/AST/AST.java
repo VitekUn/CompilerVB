@@ -6,7 +6,7 @@ import java.util.List;
 public class AST {
     private String name;
     private String type;
-    private int line; //Номер строки
+    private int line;
     private List<AST> children;
 
     public AST(String name, String type, int line, List<AST> children) {
